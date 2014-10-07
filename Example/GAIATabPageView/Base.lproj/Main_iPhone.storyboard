@@ -39,7 +39,6 @@
         <!--Demo Page View Controller-->
         <scene sceneID="8A7-Vj-o32">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="etw-RZ-Iue" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController restorationIdentifier="GAIADemoPageViewController" storyboardIdentifier="GAIADemoPageViewController" id="ITA-Ha-jPP" customClass="GAIADemoPageViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Eyq-bI-wBA"/>
@@ -59,6 +58,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="etw-RZ-Iue" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="309" y="192"/>
         </scene>
