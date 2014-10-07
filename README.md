@@ -1,6 +1,3 @@
-### Caution : This Project Beta Version
-### If you use with fork if you want to use
-
 # GAIATabPageView
 
 [![CI Status](http://img.shields.io/travis/Gaia-Murata/GAIATabPageView.svg?style=flat)](https://travis-ci.org/Gaia-Murata/GAIATabPageView)
