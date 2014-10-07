@@ -10,12 +10,11 @@
 Pod::Spec.new do |s|
   s.name             = "GAIATabPageView"
   s.version          = "0.1.0"
-  s.summary          = "A short description of GAIATabPageView."
+  s.summary          = "Google Play Like ViewCotroller"
   s.description      = <<-DESC
-                       An optional longer description of GAIATabPageView
-
-                       * Markdown format.
-                       * Don't worry about the indent, we strip it!
+                       * Google Playによく似たUI
+                       * まだまだ開発途中
+                       * 使いたいときはForkして 
                        DESC
   s.homepage         = "https://github.com/Gaia-Murata/GAIATabPageView"
   # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
