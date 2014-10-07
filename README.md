@@ -5,6 +5,10 @@
 [![License](https://img.shields.io/cocoapods/l/GAIATabPageView.svg?style=flat)](http://cocoadocs.org/docsets/GAIATabPageView)
 [![Platform](https://img.shields.io/cocoapods/p/GAIATabPageView.svg?style=flat)](http://cocoadocs.org/docsets/GAIATabPageView)
 
+##ScreenShot
+
+![Screen Shot](https://cloud.githubusercontent.com/assets/1711925/4547712/617758d2-4e4f-11e4-9f68-1a2377062377.gif)
+
 ## Usage
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
