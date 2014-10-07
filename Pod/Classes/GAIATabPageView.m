@@ -95,10 +95,6 @@
     
     self.pageViewController.dataSource = self.modelController;
     
-    self.pageViewController.view.frame = CGRectMake(0, self.tabViewHeight,
-                                                    self.view.frame.size.width,
-                                                    self.view.frame.size.height - self.tabViewHeight);
-    
     [self addChildViewController:self.pageViewController];
     [self.view addSubview:self.pageViewController.view];
     
@@ -224,10 +220,12 @@ referenceSizeForFooterInSection:(NSInteger)section selfViewframe:(CGRect)frame {
    previousViewControllers:(NSArray *)previousViewControllers
        transitionCompleted:(BOOL)completed
 {
-    [self.tabCollectionViewController selectTab:[NSIndexPath indexPathForRow:self.modelController.currentIndex inSection:0]
-                                      animation:YES];
+    if (completed) {
+        [self.tabCollectionViewController selectTab:[NSIndexPath indexPathForRow:self.modelController.currentIndex inSection:0] animation:YES];
+    }
     
 }
+
 
 - (UIPageViewControllerSpineLocation)pageViewController:(UIPageViewController *)pageViewController spineLocationForInterfaceOrientation:(UIInterfaceOrientation)orientation {
     if (UIInterfaceOrientationIsPortrait(orientation) || ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)) {

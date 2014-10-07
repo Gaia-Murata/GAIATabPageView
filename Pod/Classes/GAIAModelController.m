@@ -64,8 +64,9 @@
         return nil;
     }
     
-    self.currentIndex = index;
     [self.delegate modelControllerDidSelectPage:index];
+    self.currentIndex = index;
+
     index--;
 
     return [self viewControllerAtIndex:index];
@@ -79,8 +80,8 @@
         return nil;
     }
     
-    self.currentIndex = index;
     [self.delegate modelControllerDidSelectPage:index];
+    self.currentIndex = index;
 
     index++;
     if (index == [self.tabsArray count]) {
