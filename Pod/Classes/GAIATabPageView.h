@@ -27,6 +27,39 @@
  */
 - (GAIADataViewController *)rootViewControllerAtIndex:(NSUInteger)index;
 
+/**
+ * tabViewCollectionViewcellForItemIndexPath
+ * tabViewCollectionViewcellForItemIndexPathCurrentTab
+ *
+ * cell make
+ */
+- (UICollectionViewCell*)tabViewCollectionView:(UICollectionView *)collectionView
+                        cellForItemAtIndexPath:(NSIndexPath *)indexPath;
+- (UICollectionViewCell*)tabViewCollectionView:(UICollectionView *)collectionView
+                selectedCellForItemAtIndexPath:(NSIndexPath *)indexPath;
+/**
+ * Header Footer Size Delegate
+ */
+- (CGSize)tabViewCollectionView:(UICollectionView *)collectionView
+                         layout:(UICollectionViewLayout*)collectionViewLayout
+referenceSizeForHeaderInSection:(NSInteger)section;
+- (CGSize)tabViewCollectionView:(UICollectionView *)collectionView
+                         layout:(UICollectionViewLayout*)collectionViewLayout
+referenceSizeForFooterInSection:(NSInteger)section;
+
+/**
+ * register cell
+ */
+- (void)tabViewCollectionViewRegisterCell:(UICollectionView *)tabCollectionView;
+
+/**
+ * cell Size Delegate
+ */
+- (CGSize)tabViewCollectionView:(UICollectionView *)collectionView
+                         layout:(UICollectionViewLayout *)collectionViewLayout
+         sizeForItemAtIndexPath:(NSIndexPath *)indexPath;
+
+
 @end
 
 

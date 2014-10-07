@@ -57,6 +57,7 @@
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
 {
     NSUInteger index = [self indexOfViewController:(GAIADataViewController *)viewController];
+    
     if ((index == 0) || (index == NSNotFound)) {
         [self.delegate modelControllerDidSelectPage:0];
 

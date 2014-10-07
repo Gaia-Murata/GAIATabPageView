@@ -153,6 +153,52 @@ const int kTabViewHeight = 44;
     [self selectPage:(int)indexPath.row];
 }
 
+- (UICollectionViewCell*)tabViewCollectionView:(UICollectionView *)collectionView
+                        cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+    return [self.delegate tabViewCollectionView:(UICollectionView *)collectionView
+                  cellForItemAtIndexPath:(NSIndexPath *)indexPath];
+}
+
+- (UICollectionViewCell*)tabViewCollectionView:(UICollectionView *)collectionView
+                selectedCellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+    return [self.delegate tabViewCollectionView:(UICollectionView *)collectionView
+                 selectedCellForItemAtIndexPath:(NSIndexPath *)indexPath];
+}
+
+- (CGSize)tabViewCollectionView:(UICollectionView *)collectionView
+                         layout:(UICollectionViewLayout*)collectionViewLayout
+referenceSizeForHeaderInSection:(NSInteger)section {
+    
+    return [self.delegate tabViewCollectionView:(UICollectionView *)collectionView
+                                         layout:(UICollectionViewLayout*)collectionViewLayout
+                referenceSizeForHeaderInSection:(NSInteger)section];
+}
+
+- (void)tabViewCollectionViewRegisterCell:(UICollectionView *)tabCollectionView {
+    [self.delegate tabViewCollectionViewRegisterCell:tabCollectionView];
+}
+
+- (CGSize)tabViewCollectionView:(UICollectionView *)collectionView
+                         layout:(UICollectionViewLayout*)collectionViewLayout
+referenceSizeForFooterInSection:(NSInteger)section {
+    
+    return [self.delegate tabViewCollectionView:(UICollectionView *)collectionView
+                                         layout:(UICollectionViewLayout*)collectionViewLayout
+                referenceSizeForFooterInSection:(NSInteger)section];
+}
+
+- (CGSize)tabViewCollectionView:(UICollectionView *)collectionView
+                         layout:(UICollectionViewLayout *)collectionViewLayout
+         sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+    return [self.delegate tabViewCollectionView:(UICollectionView *)collectionView
+                                         layout:(UICollectionViewLayout *)collectionViewLayout
+                         sizeForItemAtIndexPath:(NSIndexPath *)indexPath];
+    
+}
+
 #pragma mark - UIPageViewController Delegate Methods
 - (void)pageViewController:(UIPageViewController *)pageViewController
         didFinishAnimating:(BOOL)finished
