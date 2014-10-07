@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "GAIATabPageView"
-  s.version          = "0.1.0"
+  s.version          = "0.1.1"
   s.summary          = "Google Play Like ViewCotroller"
   s.description      = <<-DESC
                        * Google Playによく似たUI
