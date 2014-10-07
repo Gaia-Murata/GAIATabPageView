@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <GAIATabPageView/GAIATabPageView.h>
 
-@interface GAIAViewController : UIViewController
+@interface GAIAViewController : UIViewController<GAIATabPageViewDelegate>
 
 @end
