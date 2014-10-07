@@ -34,30 +34,40 @@
  * cell make
  */
 - (UICollectionViewCell*)tabViewCollectionView:(UICollectionView *)collectionView
-                        cellForItemAtIndexPath:(NSIndexPath *)indexPath;
+                        cellForItemAtIndexPath:(NSIndexPath *)indexPath
+                                  tabViewFrame:(CGRect)frame;
+
 - (UICollectionViewCell*)tabViewCollectionView:(UICollectionView *)collectionView
-                selectedCellForItemAtIndexPath:(NSIndexPath *)indexPath;
+                selectedCellForItemAtIndexPath:(NSIndexPath *)indexPath
+                                  tabViewFrame:(CGRect)frame;
+
 /**
  * Header Footer Size Delegate
  */
 - (CGSize)tabViewCollectionView:(UICollectionView *)collectionView
                          layout:(UICollectionViewLayout*)collectionViewLayout
-referenceSizeForHeaderInSection:(NSInteger)section;
+referenceSizeForHeaderInSection:(NSInteger)section
+                   tabViewFrame:(CGRect)frame;
 - (CGSize)tabViewCollectionView:(UICollectionView *)collectionView
                          layout:(UICollectionViewLayout*)collectionViewLayout
-referenceSizeForFooterInSection:(NSInteger)section;
-
-/**
- * register cell
- */
-- (void)tabViewCollectionViewRegisterCell:(UICollectionView *)tabCollectionView;
+referenceSizeForFooterInSection:(NSInteger)section
+                   tabViewFrame:(CGRect)frame;
 
 /**
  * cell Size Delegate
  */
 - (CGSize)tabViewCollectionView:(UICollectionView *)collectionView
                          layout:(UICollectionViewLayout *)collectionViewLayout
-         sizeForItemAtIndexPath:(NSIndexPath *)indexPath;
+         sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+                   tabViewFrame:(CGRect)frame;
+
+
+/**
+ * register cell
+ */
+- (void)tabViewCollectionViewRegisterCell:(UICollectionView *)tabCollectionView;
+
+
 
 
 @end
@@ -74,7 +84,7 @@ referenceSizeForFooterInSection:(NSInteger)section;
  *
  * @param tabs 
  */
-- (void)drawTabview:(NSArray *)tabs;
+- (void)drawTabview:(NSArray *)tabs tabViewHeight:(CGFloat)tabViewHeight;
 
 /**
  * selectPage

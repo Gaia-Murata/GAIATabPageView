@@ -38,7 +38,7 @@ const float kLineWidth = 0.5f;
 {
     [super viewDidLoad];
     self.currentTab = kFirstSelectTab;
-
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -74,7 +74,7 @@ const float kLineWidth = 0.5f;
     
     [self.tabCollectionViewController scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:kFirstSelectTab inSection:kCollectionViewSection]
                                              atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
-
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -131,11 +131,13 @@ const float kLineWidth = 0.5f;
 - (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row == self.currentTab) {
         return [self.delegate tabViewCollectionView:collectionView
-                     selectedCellForItemAtIndexPath:indexPath];
+                     selectedCellForItemAtIndexPath:indexPath
+                                      selfViewframe:self.view.frame];
     }
     
     return [self.delegate tabViewCollectionView:collectionView
-                         cellForItemAtIndexPath:indexPath];
+                         cellForItemAtIndexPath:indexPath
+                                  selfViewframe:self.view.frame];
 }
 
 #pragma mark - UICollectionView Delegate
@@ -143,21 +145,24 @@ const float kLineWidth = 0.5f;
     
     return [self.delegate tabViewCollectionView:(UICollectionView *)collectionView
                                          layout:(UICollectionViewLayout*)collectionViewLayout
-                referenceSizeForHeaderInSection:(NSInteger)section];
+                referenceSizeForHeaderInSection:(NSInteger)section
+                                  selfViewframe:self.view.frame];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
     
     return [self.delegate tabViewCollectionView:(UICollectionView *)collectionView
                                          layout:(UICollectionViewLayout*)collectionViewLayout
-                referenceSizeForFooterInSection:(NSInteger)section];
+                referenceSizeForFooterInSection:(NSInteger)section
+                                  selfViewframe:self.view.frame];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     return [self.delegate tabViewCollectionView:collectionView
                                          layout:collectionViewLayout
-                         sizeForItemAtIndexPath:indexPath];
+                         sizeForItemAtIndexPath:indexPath
+                                  selfViewframe:self.view.frame];
     
 }
 

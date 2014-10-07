@@ -32,18 +32,24 @@
  * cell make
  */
 - (UICollectionViewCell*)tabViewCollectionView:(UICollectionView *)collectionView
-                        cellForItemAtIndexPath:(NSIndexPath *)indexPath;
+                        cellForItemAtIndexPath:(NSIndexPath *)indexPath
+                                 selfViewframe:(CGRect)frame;
+
 - (UICollectionViewCell*)tabViewCollectionView:(UICollectionView *)collectionView
-                selectedCellForItemAtIndexPath:(NSIndexPath *)indexPath;
+                selectedCellForItemAtIndexPath:(NSIndexPath *)indexPath
+                                 selfViewframe:(CGRect)frame;
 /**
  * Header Footer Size Delegate
  */
 - (CGSize)tabViewCollectionView:(UICollectionView *)collectionView
                          layout:(UICollectionViewLayout*)collectionViewLayout
-referenceSizeForHeaderInSection:(NSInteger)section;
+referenceSizeForHeaderInSection:(NSInteger)section
+                  selfViewframe:(CGRect)frame;
+
 - (CGSize)tabViewCollectionView:(UICollectionView *)collectionView
                          layout:(UICollectionViewLayout*)collectionViewLayout
-referenceSizeForFooterInSection:(NSInteger)section;
+referenceSizeForFooterInSection:(NSInteger)section
+                  selfViewframe:(CGRect)frame;
 
 /**
  * register cell
@@ -55,7 +61,8 @@ referenceSizeForFooterInSection:(NSInteger)section;
  */
 - (CGSize)tabViewCollectionView:(UICollectionView *)collectionView
                          layout:(UICollectionViewLayout *)collectionViewLayout
-         sizeForItemAtIndexPath:(NSIndexPath *)indexPath;
+         sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+                  selfViewframe:(CGRect)frame;
 
 
 @end

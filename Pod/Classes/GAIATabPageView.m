@@ -16,14 +16,13 @@
 @property (strong, nonatomic) UIPageViewController *pageViewController;
 @property (readonly, strong, nonatomic) GAIAModelController *modelController;
 @property (readonly, strong, nonatomic) GAIATabCollectionViewController *tabCollectionViewController;
-
+@property CGFloat tabViewHeight;
 
 @end
 
 @implementation GAIATabPageView
 
 //const
-const int kTabViewHeight = 44;
 
 @synthesize modelController = _modelController;
 @synthesize tabCollectionViewController = _tabCollectionViewController;
@@ -39,12 +38,14 @@ const int kTabViewHeight = 44;
 
 
 #pragma mark - Public Method
-- (void)drawTabview:(NSArray *)tabs
+- (void)drawTabview:(NSArray *)tabs tabViewHeight:(CGFloat)tabViewHeight;
 {
     self.tabCollectionViewController.delegate = self;
     self.modelController.delegate = self;
     
     self.tabsArray = tabs;
+    self.tabViewHeight = tabViewHeight;
+    
     [self setupPageViewController];
     [self setupTabView];
 }
@@ -83,7 +84,7 @@ const int kTabViewHeight = 44;
                                                                             options:nil];
     
     self.pageViewController.delegate = self;
-
+    
     GAIADataViewController *startingViewController = [self.modelController viewControllerAtIndex:0];
     
     NSArray *viewControllers = @[startingViewController];
@@ -93,10 +94,10 @@ const int kTabViewHeight = 44;
                                      completion:nil];
     
     self.pageViewController.dataSource = self.modelController;
-
-    self.pageViewController.view.frame = CGRectMake(0, kTabViewHeight,
+    
+    self.pageViewController.view.frame = CGRectMake(0, self.tabViewHeight,
                                                     self.view.frame.size.width,
-                                                    self.view.frame.size.height - kTabViewHeight);
+                                                    self.view.frame.size.height - self.tabViewHeight);
     
     [self addChildViewController:self.pageViewController];
     [self.view addSubview:self.pageViewController.view];
@@ -106,10 +107,15 @@ const int kTabViewHeight = 44;
 
 - (void)setupTabView
 {
-    //[self addChildViewController:self.pageViewController];
-    self.tabCollectionViewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, kTabViewHeight);
-    self.tabBarController.view.backgroundColor = [UIColor whiteColor];
+    
+    self.tabCollectionViewController.view.frame = CGRectMake(0, 0,
+                                                             self.view.frame.size.width,
+                                                             self.tabViewHeight);
+    
+    [self addChildViewController:self.tabCollectionViewController];
+    self.tabCollectionViewController.view.backgroundColor = [UIColor blueColor];
     [self.view addSubview:self.tabCollectionViewController.view];
+    
 }
 
 - (GAIAModelController *)modelController {
@@ -153,51 +159,64 @@ const int kTabViewHeight = 44;
     [self selectPage:(int)indexPath.row];
 }
 
+//cell
 - (UICollectionViewCell*)tabViewCollectionView:(UICollectionView *)collectionView
-                        cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+                        cellForItemAtIndexPath:(NSIndexPath *)indexPath selfViewframe:(CGRect)frame
+{
     
     return [self.delegate tabViewCollectionView:(UICollectionView *)collectionView
-                  cellForItemAtIndexPath:(NSIndexPath *)indexPath];
+                         cellForItemAtIndexPath:(NSIndexPath *)indexPath
+                                   tabViewFrame:frame];
+    
 }
 
+//select cell
 - (UICollectionViewCell*)tabViewCollectionView:(UICollectionView *)collectionView
-                selectedCellForItemAtIndexPath:(NSIndexPath *)indexPath {
+                selectedCellForItemAtIndexPath:(NSIndexPath *)indexPath selfViewframe:(CGRect)frame {
     
     return [self.delegate tabViewCollectionView:(UICollectionView *)collectionView
-                 selectedCellForItemAtIndexPath:(NSIndexPath *)indexPath];
+                 selectedCellForItemAtIndexPath:(NSIndexPath *)indexPath
+                                   tabViewFrame:frame];
 }
 
+//header size
 - (CGSize)tabViewCollectionView:(UICollectionView *)collectionView
                          layout:(UICollectionViewLayout*)collectionViewLayout
-referenceSizeForHeaderInSection:(NSInteger)section {
+referenceSizeForHeaderInSection:(NSInteger)section selfViewframe:(CGRect)frame {
     
     return [self.delegate tabViewCollectionView:(UICollectionView *)collectionView
                                          layout:(UICollectionViewLayout*)collectionViewLayout
-                referenceSizeForHeaderInSection:(NSInteger)section];
+                referenceSizeForHeaderInSection:(NSInteger)section
+                                   tabViewFrame:frame];
+}
+
+//footer size
+- (CGSize)tabViewCollectionView:(UICollectionView *)collectionView
+                         layout:(UICollectionViewLayout*)collectionViewLayout
+referenceSizeForFooterInSection:(NSInteger)section selfViewframe:(CGRect)frame {
+    
+    return [self.delegate tabViewCollectionView:(UICollectionView *)collectionView
+                                         layout:(UICollectionViewLayout*)collectionViewLayout
+                referenceSizeForFooterInSection:(NSInteger)section
+                                   tabViewFrame:frame];
+}
+
+//cell size
+- (CGSize)tabViewCollectionView:(UICollectionView *)collectionView
+                         layout:(UICollectionViewLayout *)collectionViewLayout
+         sizeForItemAtIndexPath:(NSIndexPath *)indexPath selfViewframe:(CGRect)frame {
+    
+    return [self.delegate tabViewCollectionView:(UICollectionView *)collectionView
+                                         layout:(UICollectionViewLayout *)collectionViewLayout
+                         sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+                                   tabViewFrame:frame];
+    
 }
 
 - (void)tabViewCollectionViewRegisterCell:(UICollectionView *)tabCollectionView {
     [self.delegate tabViewCollectionViewRegisterCell:tabCollectionView];
 }
 
-- (CGSize)tabViewCollectionView:(UICollectionView *)collectionView
-                         layout:(UICollectionViewLayout*)collectionViewLayout
-referenceSizeForFooterInSection:(NSInteger)section {
-    
-    return [self.delegate tabViewCollectionView:(UICollectionView *)collectionView
-                                         layout:(UICollectionViewLayout*)collectionViewLayout
-                referenceSizeForFooterInSection:(NSInteger)section];
-}
-
-- (CGSize)tabViewCollectionView:(UICollectionView *)collectionView
-                         layout:(UICollectionViewLayout *)collectionViewLayout
-         sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    
-    return [self.delegate tabViewCollectionView:(UICollectionView *)collectionView
-                                         layout:(UICollectionViewLayout *)collectionViewLayout
-                         sizeForItemAtIndexPath:(NSIndexPath *)indexPath];
-    
-}
 
 #pragma mark - UIPageViewController Delegate Methods
 - (void)pageViewController:(UIPageViewController *)pageViewController
@@ -207,7 +226,7 @@ referenceSizeForFooterInSection:(NSInteger)section {
 {
     [self.tabCollectionViewController selectTab:[NSIndexPath indexPathForRow:self.modelController.currentIndex inSection:0]
                                       animation:YES];
-
+    
 }
 
 - (UIPageViewControllerSpineLocation)pageViewController:(UIPageViewController *)pageViewController spineLocationForInterfaceOrientation:(UIInterfaceOrientation)orientation {
@@ -225,11 +244,11 @@ referenceSizeForFooterInSection:(NSInteger)section {
         self.pageViewController.doubleSided = NO;
         return UIPageViewControllerSpineLocationMin;
     }
-
+    
     // In landscape orientation: Set set the spine location to "mid" and the page view controller's view controllers array to contain two view controllers. If the current page is even, set it to contain the current and next view controllers; if it is odd, set the array to contain the previous and current view controllers.
     GAIADataViewController *currentViewController = self.pageViewController.viewControllers[0];
     NSArray *viewControllers = nil;
-
+    
     NSUInteger indexOfCurrentViewController = [self.modelController indexOfViewController:currentViewController];
     if (indexOfCurrentViewController == 0 || indexOfCurrentViewController % 2 == 0) {
         UIViewController *nextViewController = [self.modelController pageViewController:self.pageViewController viewControllerAfterViewController:currentViewController];
@@ -239,8 +258,8 @@ referenceSizeForFooterInSection:(NSInteger)section {
         viewControllers = @[previousViewController, currentViewController];
     }
     [self.pageViewController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
-
-
+    
+    
     return UIPageViewControllerSpineLocationMid;
 }
 

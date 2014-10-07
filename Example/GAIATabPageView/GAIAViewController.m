@@ -20,6 +20,7 @@
 
 @implementation GAIAViewController
 
+const int kTabViewCellHeigth = 44;
 const int kTabViewWidthMargin = 12;
 const int kCurrentViewMarkHeightMargin  = 5;
 const int kCurrentViewMarkWidthMargin   = 10;
@@ -27,7 +28,7 @@ const int kCurrentViewMarkWidthMargin   = 10;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+    // Do any additional setup after loading the view, typically from a nib.
     self.tabsArray = @[@"Tab1", @"Tab2", @"Tab3"];
     self.tabPageRootViewController = [GAIATabPageView new];
     //Current Tab Color Setting
@@ -35,8 +36,12 @@ const int kCurrentViewMarkWidthMargin   = 10;
     self.tabPageRootViewController.delegate = self;
     [self.view addSubview:self.tabPageRootViewController.view];
     self.tabPageRootViewController.view.frame = self.view.bounds;
-    //Draw TabView
-    [self.tabPageRootViewController drawTabview:self.tabsArray];
+    
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [self.tabPageRootViewController drawTabview:self.tabsArray tabViewHeight:kTabViewCellHeigth];
 }
 
 - (void)didReceiveMemoryWarning
@@ -56,10 +61,11 @@ const int kCurrentViewMarkWidthMargin   = 10;
     return vc;
 }
 
-//通常のCEllを返す
+//通常のCellを返す
 - (UICollectionViewCell*)tabViewCollectionView:(UICollectionView *)collectionView
-                        cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    //todo CellClass
+                        cellForItemAtIndexPath:(NSIndexPath *)indexPath
+                                  tabViewFrame:(CGRect)frame {
+    
     NSString *cellId = @"UICollectionViewCell";
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellId forIndexPath:indexPath];
     
@@ -81,7 +87,7 @@ const int kCurrentViewMarkWidthMargin   = 10;
     
     [cell.contentView addSubview:label];
     label.frame = CGRectMake(label.frame.origin.x,
-                             self.view.frame.size.height / 2 - label.frame.size.height / 2,
+                             frame.size.height / 2 - label.frame.size.height / 2,
                              label.frame.size.width + (kTabViewWidthMargin * 2),
                              label.frame.size.height);
     label.layer.zPosition = 2;
@@ -89,9 +95,10 @@ const int kCurrentViewMarkWidthMargin   = 10;
     return cell;
 }
 
-//選択済みのCEllを返す
+//選択済みのCellを返す
 - (UICollectionViewCell*)tabViewCollectionView:(UICollectionView *)collectionView
-                selectedCellForItemAtIndexPath:(NSIndexPath *)indexPath {
+                selectedCellForItemAtIndexPath:(NSIndexPath *)indexPath
+                                  tabViewFrame:(CGRect)frame {
     
     //todo CellClass
     NSString *cellId = @"UICollectionViewCell";
@@ -114,7 +121,7 @@ const int kCurrentViewMarkWidthMargin   = 10;
     
     [cell.contentView addSubview:label];
     label.frame = CGRectMake(label.frame.origin.x,
-                             self.view.frame.size.height / 2 - label.frame.size.height / 2,
+                             frame.size.height / 2 - label.frame.size.height / 2,
                              label.frame.size.width + (kTabViewWidthMargin * 2),
                              label.frame.size.height);
     label.layer.zPosition = 2;
@@ -123,7 +130,7 @@ const int kCurrentViewMarkWidthMargin   = 10;
     currentView.backgroundColor = [UIColor blueColor];
     [cell.contentView addSubview:currentView];
     currentView.frame = CGRectMake(kTabViewWidthMargin - kCurrentViewMarkWidthMargin,
-                                   self.view.frame.size.height / 2 - (label.frame.size.height / 2 + kCurrentViewMarkHeightMargin),
+                                   frame.size.height / 2 - (label.frame.size.height / 2 + kCurrentViewMarkHeightMargin),
                                    label.frame.size.width - (kTabViewWidthMargin * 2) + (kCurrentViewMarkWidthMargin * 2),
                                    label.frame.size.height + (kCurrentViewMarkHeightMargin * 2));
     currentView.layer.cornerRadius = currentView.frame.size.height / 2.0f;
@@ -137,33 +144,28 @@ const int kCurrentViewMarkWidthMargin   = 10;
 //Header のサイズを返す
 - (CGSize)tabViewCollectionView:(UICollectionView *)collectionView
                          layout:(UICollectionViewLayout*)collectionViewLayout
-referenceSizeForHeaderInSection:(NSInteger)section {
-    CGSize headerSize = CGSizeMake((self.view.frame.size.width / 2) - (self.firstCellWidth / 2), 44);
+referenceSizeForHeaderInSection:(NSInteger)section
+                   tabViewFrame:(CGRect)frame {
+    CGSize headerSize = CGSizeMake((self.view.frame.size.width / 2) - (self.firstCellWidth / 2), frame.size.height);
     return headerSize;
-
+    
 }
 
 //Footerのサイズを返す
 - (CGSize)tabViewCollectionView:(UICollectionView *)collectionView
                          layout:(UICollectionViewLayout*)collectionViewLayout
-referenceSizeForFooterInSection:(NSInteger)section {
-    CGSize footerSize = CGSizeMake((self.view.frame.size.width / 2) - (self.lastCellWidth / 2), 44);
+referenceSizeForFooterInSection:(NSInteger)section
+                   tabViewFrame:(CGRect)frame {
+    CGSize footerSize = CGSizeMake((self.view.frame.size.width / 2) - (self.lastCellWidth / 2), frame.size.height);
     return footerSize;
-
-}
-
-//Cellを登録する
-- (void)tabViewCollectionViewRegisterCell:(UICollectionView *)tabCollectionView {
-
-    [tabCollectionView registerClass:[UICollectionViewCell class]forCellWithReuseIdentifier:@"UICollectionViewCell"];
-    [tabCollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderView"];
-    [tabCollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView"];
+    
 }
 
 //Cellのサイズを返す
 - (CGSize)tabViewCollectionView:(UICollectionView *)collectionView
                          layout:(UICollectionViewLayout *)collectionViewLayout
-         sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+         sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+                   tabViewFrame:(CGRect)frame {
     
     UILabel *label = [UILabel new];
     label.backgroundColor = [UIColor clearColor];
@@ -182,8 +184,18 @@ referenceSizeForFooterInSection:(NSInteger)section {
         self.lastCellWidth  = label.frame.size.width + kTabViewWidthMargin * 2;
     }
     
-    return CGSizeMake(label.frame.size.width + (kTabViewWidthMargin * 2), self.view.frame.size.height);
+    return CGSizeMake(label.frame.size.width + (kTabViewWidthMargin * 2), frame.size.height);
     
 }
+
+//Cellを登録する
+- (void)tabViewCollectionViewRegisterCell:(UICollectionView *)tabCollectionView {
+    
+    [tabCollectionView registerClass:[UICollectionViewCell class]forCellWithReuseIdentifier:@"UICollectionViewCell"];
+    [tabCollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderView"];
+    [tabCollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView"];
+}
+
+
 
 @end
