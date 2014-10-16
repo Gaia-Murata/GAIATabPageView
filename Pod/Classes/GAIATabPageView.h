@@ -10,8 +10,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GAIAModelController.h"
-#import "GAIADataViewController.h"
 #import "GAIATabCollectionViewController.h"
 
 @class GAIATabPageView;
@@ -25,7 +23,7 @@
  * @param index Index of Page transition
  * @return GAIADataViewController
  */
-- (GAIADataViewController *)rootViewControllerAtIndex:(NSUInteger)index;
+//- (GAIADataViewController *)rootViewControllerAtIndex:(NSUInteger)index;
 
 /**
  * tabViewCollectionViewcellForItemIndexPath
@@ -73,7 +71,7 @@ referenceSizeForFooterInSection:(NSInteger)section
 @end
 
 
-@interface GAIATabPageView : UIViewController <UIPageViewControllerDelegate, GAIATabCollectionViewControllerDelegate, GAIAModelControllerDelegate>
+@interface GAIATabPageView : UIViewController <GAIATabCollectionViewControllerDelegate, UIScrollViewDelegate>
 
 @property (weak, nonatomic) id<GAIATabPageViewDelegate> delegate;
 //NSArray Array for tabs make

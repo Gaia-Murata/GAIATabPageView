@@ -9,12 +9,13 @@
 
 Pod::Spec.new do |s|
   s.name             = "GAIATabPageView"
-  s.version          = "0.1.0"
+  s.version          = "0.1.2"
   s.summary          = "Google Play Like ViewCotroller"
   s.description      = <<-DESC
-                       * Google Playによく似たUI
-                       * まだまだ開発途中
-                       * 使いたいときはForkして 
+                       * Google Play Like Tab Paging ViewCotroller
+                       * None yet stable version
+                       * It was designed to be able to change freely
+                       * It might be wise is to use in place of the fork now
                        DESC
   s.homepage         = "https://github.com/Gaia-Murata/GAIATabPageView"
   # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"

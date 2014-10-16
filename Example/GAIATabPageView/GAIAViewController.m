@@ -51,15 +51,16 @@ const int kCurrentViewMarkWidthMargin   = 10;
 }
 
 #pragma mark - GAIATabPageViewDelegate
-- (GAIADataViewController *)rootViewControllerAtIndex:(NSUInteger)index
-{
-    if (([self.tabsArray count] == 0) || (index >= [self.tabsArray count])) {
-        return nil;
-    }
-    
-    GAIADemoPageViewController *vc = (GAIADemoPageViewController*)[self.storyboard instantiateViewControllerWithIdentifier:@"GAIADemoPageViewController"];
-    return vc;
-}
+//- (GAIADataViewController *)rootViewControllerAtIndex:(NSUInteger)index
+//{
+//    if (([self.tabsArray count] == 0) || (index >= [self.tabsArray count])) {
+//        return nil;
+//    }
+//    
+//    GAIADemoPageViewController *vc = (GAIADemoPageViewController*)[self.storyboard instantiateViewControllerWithIdentifier:@"GAIADemoPageViewController"];
+//    vc.view.frame = CGRectMake(0, kTabViewCellHeigth, self.view.frame.size.width, self.view.frame.size.height - kTabViewCellHeigth);
+//    return vc;
+//}
 
 //通常のCellを返す
 - (UICollectionViewCell*)tabViewCollectionView:(UICollectionView *)collectionView
