@@ -24,12 +24,13 @@ const int kTabViewCellHeigth = 44;
 const int kTabViewWidthMargin = 12;
 const int kCurrentViewMarkHeightMargin  = 5;
 const int kCurrentViewMarkWidthMargin   = 10;
+const float kLineWidth = 0.5f;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    self.tabsArray = @[@"Tab1", @"Tab2", @"Tab3"];
+    self.tabsArray = @[@"FLAMINGO", @"HONY FLOWER", @"ROYAL", @"EUCALYPTUS", @"SAND STORM"];
     self.tabPageRootViewController = [GAIATabPageView new];
     //Current Tab Color Setting
     
@@ -50,19 +51,58 @@ const int kCurrentViewMarkWidthMargin   = 10;
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - GAIATabPageViewDelegate
-//- (GAIADataViewController *)rootViewControllerAtIndex:(NSUInteger)index
-//{
-//    if (([self.tabsArray count] == 0) || (index >= [self.tabsArray count])) {
-//        return nil;
-//    }
-//    
-//    GAIADemoPageViewController *vc = (GAIADemoPageViewController*)[self.storyboard instantiateViewControllerWithIdentifier:@"GAIADemoPageViewController"];
-//    vc.view.frame = CGRectMake(0, kTabViewCellHeigth, self.view.frame.size.width, self.view.frame.size.height - kTabViewCellHeigth);
-//    return vc;
-//}
+#pragma mark - Private Method
+- (void)drawTopLine:(CGRect)collectionViewFrame
+{
+    UIView *border = [[UIView alloc] initWithFrame:CGRectMake(0,
+                                                              0,
+                                                              self.view.frame.size.width,
+                                                              kLineWidth)];
+    
+    border.backgroundColor = [UIColor colorWithRed:204.0f/255.0f green:204.0f/255.0f blue:204.0f/255.0f alpha:1];
+    border.layer.zPosition = 101;
+    [self.view addSubview:border];
+}
 
-//通常のCellを返す
+- (void)drawUnderLine:(CGRect)collectionViewFrame
+{
+    UIView *border = [[UIView alloc] initWithFrame:CGRectMake(0,
+                                                              collectionViewFrame.size.height - kLineWidth,
+                                                              self.view.frame.size.width,
+                                                              kLineWidth)];
+    
+    border.backgroundColor = [UIColor colorWithRed:204.0f/255.0f green:204.0f/255.0f blue:204.0f/255.0f alpha:1];
+    border.layer.zPosition = 101;
+    [self.view addSubview:border];
+}
+
+
+#pragma mark - GAIATabPageViewDelegate
+/////////////////PagingSetting
+- (UIViewController *)tabViewPageUIViewControllerAtIndex:(NSUInteger)index
+{
+    if (([self.tabsArray count] == 0) || (index >= [self.tabsArray count])) {
+        return nil;
+    }
+    GAIADemoPageViewController *vc;
+    
+    if (index == 0) {
+        vc = (GAIADemoPageViewController*)[self.storyboard instantiateViewControllerWithIdentifier:@"GAIADemoPageViewController1"];
+    } else if (index == 1) {
+        vc = (GAIADemoPageViewController*)[self.storyboard instantiateViewControllerWithIdentifier:@"GAIADemoPageViewController2"];
+    } else if (index == 2) {
+        vc = (GAIADemoPageViewController*)[self.storyboard instantiateViewControllerWithIdentifier:@"GAIADemoPageViewController3"];
+    } else if (index == 3) {
+        vc = (GAIADemoPageViewController*)[self.storyboard instantiateViewControllerWithIdentifier:@"GAIADemoPageViewController4"];
+    } else if (index == 4) {
+        vc = (GAIADemoPageViewController*)[self.storyboard instantiateViewControllerWithIdentifier:@"GAIADemoPageViewController5"];
+    }
+    
+    return vc;
+}
+
+////////////////Tab Setting
+//TabCell
 - (UICollectionViewCell*)tabViewCollectionView:(UICollectionView *)collectionView
                         cellForItemAtIndexPath:(NSIndexPath *)indexPath
                                   tabViewFrame:(CGRect)frame {
@@ -96,7 +136,7 @@ const int kCurrentViewMarkWidthMargin   = 10;
     return cell;
 }
 
-//選択済みのCellを返す
+//CurrentTabCell
 - (UICollectionViewCell*)tabViewCollectionView:(UICollectionView *)collectionView
                 selectedCellForItemAtIndexPath:(NSIndexPath *)indexPath
                                   tabViewFrame:(CGRect)frame {
@@ -128,7 +168,7 @@ const int kCurrentViewMarkWidthMargin   = 10;
     label.layer.zPosition = 2;
     
     UIView *currentView = [[UIView alloc] init];
-    currentView.backgroundColor = [UIColor blueColor];
+    currentView.backgroundColor = [UIColor colorWithRed:149.0f / 255.0f green:165.0f / 255.0f blue:166.0f / 255.0f alpha:1.0f];
     [cell.contentView addSubview:currentView];
     currentView.frame = CGRectMake(kTabViewWidthMargin - kCurrentViewMarkWidthMargin,
                                    frame.size.height / 2 - (label.frame.size.height / 2 + kCurrentViewMarkHeightMargin),
@@ -142,7 +182,7 @@ const int kCurrentViewMarkWidthMargin   = 10;
     return cell;
 }
 
-//Header のサイズを返す
+//Tab Left(Header) Size
 - (CGSize)tabViewCollectionView:(UICollectionView *)collectionView
                          layout:(UICollectionViewLayout*)collectionViewLayout
 referenceSizeForHeaderInSection:(NSInteger)section
@@ -152,7 +192,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
     
 }
 
-//Footerのサイズを返す
+//Tab Right(Footer) Size
 - (CGSize)tabViewCollectionView:(UICollectionView *)collectionView
                          layout:(UICollectionViewLayout*)collectionViewLayout
 referenceSizeForFooterInSection:(NSInteger)section
@@ -162,7 +202,7 @@ referenceSizeForFooterInSection:(NSInteger)section
     
 }
 
-//Cellのサイズを返す
+//Tab Size
 - (CGSize)tabViewCollectionView:(UICollectionView *)collectionView
                          layout:(UICollectionViewLayout *)collectionViewLayout
          sizeForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -189,13 +229,24 @@ referenceSizeForFooterInSection:(NSInteger)section
     
 }
 
-//Cellを登録する
+//TabCell Register
 - (void)tabViewCollectionViewRegisterCell:(UICollectionView *)tabCollectionView {
     
     [tabCollectionView registerClass:[UICollectionViewCell class]forCellWithReuseIdentifier:@"UICollectionViewCell"];
     [tabCollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderView"];
     [tabCollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView"];
 }
+
+////TabBackGroundView
+- (void)tabViewCollectionViewCustom:(UICollectionView *)collectionView
+{
+    collectionView.backgroundColor = [UIColor whiteColor];
+
+    [self drawTopLine:collectionView.frame];
+    [self drawUnderLine:collectionView.frame];\
+    
+}
+
 
 
 

@@ -23,7 +23,7 @@
  * @param index Index of Page transition
  * @return GAIADataViewController
  */
-//- (GAIADataViewController *)rootViewControllerAtIndex:(NSUInteger)index;
+- (UIViewController *)tabViewPageUIViewControllerAtIndex:(NSUInteger)index;
 
 /**
  * tabViewCollectionViewcellForItemIndexPath
@@ -59,14 +59,15 @@ referenceSizeForFooterInSection:(NSInteger)section
          sizeForItemAtIndexPath:(NSIndexPath *)indexPath
                    tabViewFrame:(CGRect)frame;
 
-
 /**
  * register cell
  */
-- (void)tabViewCollectionViewRegisterCell:(UICollectionView *)tabCollectionView;
+- (void)tabViewCollectionViewRegisterCell:(UICollectionView *)collectionView;
 
-
-
+/**
+ * uicollectionview custom
+ */
+- (void)tabViewCollectionViewCustom:(UICollectionView *)collectionView;
 
 @end
 

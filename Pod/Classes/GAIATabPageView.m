@@ -66,6 +66,10 @@
     self.pageScrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
     self.pageScrollView.pagingEnabled = YES;
     self.pageScrollView.delegate = self;
+    self.pageScrollView.showsHorizontalScrollIndicator = NO;
+    self.currentPage = 1;
+    self.isTabSelectScroll = NO;
+
     
     CGSize s = self.pageScrollView.frame.size;
     CGRect contentRect = CGRectMake(0,
@@ -76,23 +80,22 @@
 
     NSInteger index;
     for (index = 0; index < [self.tabsArray count]; index++) {
-        UIView *subContent1View = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width * index,
-                                                                           0,
-                                                                           s.width,
-                                                                           s.height)];
-        subContent1View.backgroundColor = [UIColor colorWithRed:index*20/255.0f green:204.0f * index/255.0f blue:204.0f/255.0f alpha:1];
-        [contentView addSubview:subContent1View];
+        
+        UIView *pageView = [self.delegate tabViewPageUIViewControllerAtIndex:index].view;
+        pageView.frame = CGRectMake(self.view.frame.size.width * index,
+                                    0,
+                                    s.width,
+                                    s.height - self.tabViewHeight);
+        
+        [contentView addSubview:pageView];
     }
-
-    // スクロールViewにコンテンツViewを追加する。
+    
     [self.pageScrollView addSubview:contentView];
     self.pageScrollView.contentSize = contentView.frame.size;
     
-    // 初期表示するコンテンツViewの場所を指定します。
     self.pageScrollView.contentOffset = CGPointMake(0, 0);
-    self.currentPage = 1;
+    
     [self.view addSubview:self.pageScrollView];
-    self.isTabSelectScroll = NO;
 
 }
 
@@ -202,8 +205,14 @@ referenceSizeForFooterInSection:(NSInteger)section selfViewframe:(CGRect)frame {
     
 }
 
-- (void)tabViewCollectionViewRegisterCell:(UICollectionView *)tabCollectionView {
-    [self.delegate tabViewCollectionViewRegisterCell:tabCollectionView];
+//register cell
+- (void)tabViewCollectionViewRegisterCell:(UICollectionView *)collectionView {
+    [self.delegate tabViewCollectionViewRegisterCell:collectionView];
+}
+
+//tabcollection view custom
+- (void)tabViewCollectionViewCustom:(UICollectionView *)collectionView {
+    [self.delegate tabViewCollectionViewCustom:collectionView];
 }
 
 @end
