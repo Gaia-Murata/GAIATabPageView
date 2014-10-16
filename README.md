@@ -7,7 +7,7 @@
 
 ##ScreenShot
 
-![Screen Shot](https://cloud.githubusercontent.com/assets/1711925/4547712/617758d2-4e4f-11e4-9f68-1a2377062377.gif)
+![Screen Shot](https://cloud.githubusercontent.com/assets/1711925/4669960/add2c49e-5572-11e4-8ccb-d381e5f8040d.gif)
 
 ## Usage
 

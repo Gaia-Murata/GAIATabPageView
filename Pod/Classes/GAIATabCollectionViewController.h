@@ -31,23 +31,23 @@
  *
  * cell make
  */
-- (UICollectionViewCell*)tabViewCollectionView:(UICollectionView *)collectionView
+- (UICollectionViewCell*)tabViewCollectionView:(UICollectionView *)tabCollectionView
                         cellForItemAtIndexPath:(NSIndexPath *)indexPath
                                  selfViewframe:(CGRect)frame;
 
-- (UICollectionViewCell*)tabViewCollectionView:(UICollectionView *)collectionView
+- (UICollectionViewCell*)tabViewCollectionView:(UICollectionView *)tabCollectionView
                 selectedCellForItemAtIndexPath:(NSIndexPath *)indexPath
                                  selfViewframe:(CGRect)frame;
 /**
  * Header Footer Size Delegate
  */
-- (CGSize)tabViewCollectionView:(UICollectionView *)collectionView
+- (CGSize)tabViewCollectionView:(UICollectionView *)tabCollectionView
                          layout:(UICollectionViewLayout*)collectionViewLayout
 referenceSizeForHeaderInSection:(NSInteger)section
                   selfViewframe:(CGRect)frame;
 
-- (CGSize)tabViewCollectionView:(UICollectionView *)collectionView
-                         layout:(UICollectionViewLayout*)collectionViewLayout
+- (CGSize)tabViewCollectionView:(UICollectionView *)tabCollectionView
+                         layout:(UICollectionViewLayout*)tabCollectionViewLayout
 referenceSizeForFooterInSection:(NSInteger)section
                   selfViewframe:(CGRect)frame;
 
@@ -59,11 +59,15 @@ referenceSizeForFooterInSection:(NSInteger)section
 /**
  * cell Size Delegate
  */
-- (CGSize)tabViewCollectionView:(UICollectionView *)collectionView
-                         layout:(UICollectionViewLayout *)collectionViewLayout
+- (CGSize)tabViewCollectionView:(UICollectionView *)tabCollectionView
+                         layout:(UICollectionViewLayout *)tabCollectionViewLayout
          sizeForItemAtIndexPath:(NSIndexPath *)indexPath
                   selfViewframe:(CGRect)frame;
 
+/**
+ * UICollectionView Delegate
+ */
+- (void)tabViewCollectionViewCustom:(UICollectionView *)collectionView;
 
 @end
 

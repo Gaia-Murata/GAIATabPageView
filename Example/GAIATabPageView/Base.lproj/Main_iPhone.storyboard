@@ -1,9 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Icz-7t-Lpt">
     <dependencies>
+        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="mmH-TM-jxh">
+            <objects>
+                <navigationController hidesBottomBarWhenPushed="YES" id="Icz-7t-Lpt" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="yXP-gj-GeC">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="Tgh-Yc-qNJ">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
+                    <connections>
+                        <segue destination="vXZ-lx-hvc" kind="relationship" relationship="rootViewController" id="igm-eg-Fib"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="oyo-ET-BuG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-681" y="-50"/>
+        </scene>
         <!--View Controller-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
@@ -17,20 +37,15 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TOE-vK-9Fx">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="240"/>
+                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                                 <connections>
                                     <segue destination="PdP-BH-ZH6" kind="embed" id="HyK-DZ-vaV"/>
-                                </connections>
-                            </containerView>
-                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6fQ-bK-X1d">
-                                <rect key="frame" x="0.0" y="335" width="320" height="233"/>
-                                <connections>
-                                    <segue destination="PdP-BH-ZH6" kind="embed" id="7X2-57-4z2"/>
                                 </connections>
                             </containerView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="0.46172710970000003" blue="0.23871696719999999" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
+                    <navigationItem key="navigationItem" id="R0g-pu-iLK"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
@@ -39,28 +54,30 @@
         <!--Demo Page View Controller-->
         <scene sceneID="8A7-Vj-o32">
             <objects>
-                <viewController restorationIdentifier="GAIADemoPageViewController" storyboardIdentifier="GAIADemoPageViewController" id="ITA-Ha-jPP" customClass="GAIADemoPageViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GAIADemoPageViewController1" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ITA-Ha-jPP" customClass="GAIADemoPageViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Eyq-bI-wBA"/>
                         <viewControllerLayoutGuide type="bottom" id="mi5-mt-JhO"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="bir-zX-Sbx">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Page" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SEs-Vq-fFc">
-                                <rect key="frame" x="140" y="57" width="40" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="FLAMINGO" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eqg-Nb-0hU">
+                                <rect key="frame" x="23" y="126" width="274" height="145"/>
+                                <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="50"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.93725490196078431" green="0.28235294117647058" blue="0.21176470588235294" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="320" height="504"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="etw-RZ-Iue" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="309" y="192"/>
+            <point key="canvasLocation" x="-178" y="582"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="9PB-VG-gJT">
@@ -71,7 +88,7 @@
                         <viewControllerLayoutGuide type="bottom" id="lHT-eW-aOp"/>
                     </layoutGuides>
                     <view key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="6Lv-Aa-pQZ">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="240"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -79,7 +96,121 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="R8l-pL-NUW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="309" y="-265"/>
+            <point key="canvasLocation" x="343" y="-50"/>
+        </scene>
+        <!--Demo Page View Controller-->
+        <scene sceneID="PmX-1F-OJB">
+            <objects>
+                <viewController storyboardIdentifier="GAIADemoPageViewController3" useStoryboardIdentifierAsRestorationIdentifier="YES" id="RNE-IQ-HY1" customClass="GAIADemoPageViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="5HQ-bG-tJm"/>
+                        <viewControllerLayoutGuide type="bottom" id="lHQ-tK-qGf"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="DHa-fV-wcX">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="ROYAL" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fRg-eC-Lui">
+                                <rect key="frame" x="23" y="127" width="274" height="145"/>
+                                <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="50"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.25490196078431371" green="0.51372549019607838" blue="0.84313725490196079" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="320" height="504"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="H1E-g0-zaE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="522" y="582"/>
+        </scene>
+        <!--Demo Page View Controller-->
+        <scene sceneID="fEN-nB-8uy">
+            <objects>
+                <viewController storyboardIdentifier="GAIADemoPageViewController4" useStoryboardIdentifierAsRestorationIdentifier="YES" id="LMT-cF-7Po" customClass="GAIADemoPageViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="tDV-qV-zji"/>
+                        <viewControllerLayoutGuide type="bottom" id="oAB-7r-jOi"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="GqI-2K-YA9">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="EUCALYPTUS" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eei-rg-fiX">
+                                <rect key="frame" x="57" y="127" width="206" height="145"/>
+                                <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="50"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.14901960784313725" green="0.65098039215686276" blue="0.35686274509803922" alpha="1" colorSpace="deviceRGB"/>
+                    </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="320" height="504"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4kO-LY-OOh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="875" y="582"/>
+        </scene>
+        <!--Demo Page View Controller-->
+        <scene sceneID="tmF-gn-qvB">
+            <objects>
+                <viewController storyboardIdentifier="GAIADemoPageViewController5" useStoryboardIdentifierAsRestorationIdentifier="YES" id="dBq-s1-lNm" customClass="GAIADemoPageViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="cfW-n1-NLy"/>
+                        <viewControllerLayoutGuide type="bottom" id="YSP-Jy-1vB"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="0TJ-Rk-0cY">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="SAND STORM" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="grm-a9-jVO">
+                                <rect key="frame" x="-1" y="127" width="322" height="145"/>
+                                <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="50"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.97647058823529409" green="0.74901960784313726" blue="0.23137254901960785" alpha="1" colorSpace="deviceRGB"/>
+                    </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="320" height="504"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lzo-aj-ULy" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1251" y="582"/>
+        </scene>
+        <!--Demo Page View Controller-->
+        <scene sceneID="bHx-kP-v0g">
+            <objects>
+                <viewController storyboardIdentifier="GAIADemoPageViewController2" useStoryboardIdentifierAsRestorationIdentifier="YES" id="OTz-Dq-X77" customClass="GAIADemoPageViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="cct-0p-Oxz"/>
+                        <viewControllerLayoutGuide type="bottom" id="Cb2-e1-1fq"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="h0z-LR-0Nj">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jJT-bG-fgt">
+                                <rect key="frame" x="23" y="127" width="274" height="145"/>
+                                <string key="text">HONY
+FLOWER</string>
+                                <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="50"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.40392156862745099" green="0.25490196078431371" blue="0.44705882352941173" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="320" height="504"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AwG-KO-YC3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="173" y="582"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
@@ -87,7 +218,4 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
-    <inferredMetricsTieBreakers>
-        <segue reference="HyK-DZ-vaV"/>
-    </inferredMetricsTieBreakers>
 </document>

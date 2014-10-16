@@ -13,10 +13,11 @@
 
 @interface GAIATabPageView ()
 
-@property (strong, nonatomic) UIPageViewController *pageViewController;
-@property (readonly, strong, nonatomic) GAIAModelController *modelController;
+@property (strong, nonatomic) UIScrollView *pageScrollView;
 @property (readonly, strong, nonatomic) GAIATabCollectionViewController *tabCollectionViewController;
+@property NSInteger currentPage;
 @property CGFloat tabViewHeight;
+@property BOOL isTabSelectScroll;
 
 @end
 
@@ -24,7 +25,6 @@
 
 //const
 
-@synthesize modelController = _modelController;
 @synthesize tabCollectionViewController = _tabCollectionViewController;
 
 - (void)viewDidLoad {
@@ -41,7 +41,6 @@
 - (void)drawTabview:(NSArray *)tabs tabViewHeight:(CGFloat)tabViewHeight;
 {
     self.tabCollectionViewController.delegate = self;
-    self.modelController.delegate = self;
     
     self.tabsArray = tabs;
     self.tabViewHeight = tabViewHeight;
@@ -52,58 +51,57 @@
 
 - (void)selectPage:(int)index
 {
-    //If Reverse number of pages is less than the CurrentIndex
-    if (self.modelController.currentIndex > index) {
-        self.modelController.currentIndex = index;
-        GAIADataViewController *selectViewController = [self.modelController viewControllerAtIndex:index];
-        NSArray *viewControllers = @[selectViewController];
-        [self.pageViewController setViewControllers:viewControllers
-                                          direction:UIPageViewControllerNavigationDirectionReverse
-                                           animated:YES
-                                         completion:nil];
-        
-        //If Forword number of pages is greater than CurrentIndex
-    } else if(self.modelController.currentIndex < index) {
-        self.modelController.currentIndex = index;
-        GAIADataViewController *selectViewController = [self.modelController viewControllerAtIndex:index];
-        
-        NSArray *viewControllers = @[selectViewController];
-        [self.pageViewController setViewControllers:viewControllers
-                                          direction:UIPageViewControllerNavigationDirectionForward
-                                           animated:YES
-                                         completion:nil];
-    }
+    self.isTabSelectScroll = YES;
+    self.currentPage = index;
+    CGPoint offset;
+    offset.x = self.view.frame.size.width * index;
+    offset.y = 0;
+    [self.pageScrollView setContentOffset:offset animated:YES];
 }
 
 #pragma mark - Private Method
 
 - (void)setupPageViewController
 {
-    self.pageViewController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll
-                                                              navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal
-                                                                            options:nil];
+    self.pageScrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
+    self.pageScrollView.pagingEnabled = YES;
+    self.pageScrollView.delegate = self;
+    self.pageScrollView.showsHorizontalScrollIndicator = NO;
+    self.currentPage = 1;
+    self.isTabSelectScroll = NO;
+
     
-    self.pageViewController.delegate = self;
+    CGSize s = self.pageScrollView.frame.size;
+    CGRect contentRect = CGRectMake(0,
+                                    self.tabViewHeight,
+                                    s.width * [self.tabsArray count],
+                                    s.height);
+    UIView *contentView = [[UIView alloc] initWithFrame:contentRect];
+
+    NSInteger index;
+    for (index = 0; index < [self.tabsArray count]; index++) {
+        
+        UIView *pageView = [self.delegate tabViewPageUIViewControllerAtIndex:index].view;
+        pageView.frame = CGRectMake(self.view.frame.size.width * index,
+                                    0,
+                                    s.width,
+                                    s.height - self.tabViewHeight);
+        
+        [contentView addSubview:pageView];
+    }
     
-    GAIADataViewController *startingViewController = [self.modelController viewControllerAtIndex:0];
+    [self.pageScrollView addSubview:contentView];
+    self.pageScrollView.contentSize = contentView.frame.size;
     
-    NSArray *viewControllers = @[startingViewController];
-    [self.pageViewController setViewControllers:viewControllers
-                                      direction:UIPageViewControllerNavigationDirectionForward
-                                       animated:NO
-                                     completion:nil];
+    self.pageScrollView.contentOffset = CGPointMake(0, 0);
     
-    self.pageViewController.dataSource = self.modelController;
-    
-    [self addChildViewController:self.pageViewController];
-    [self.view addSubview:self.pageViewController.view];
-    
-    self.view.gestureRecognizers = self.pageViewController.gestureRecognizers;
+    [self.view addSubview:self.pageScrollView];
+
 }
+
 
 - (void)setupTabView
 {
-    
     self.tabCollectionViewController.view.frame = CGRectMake(0, 0,
                                                              self.view.frame.size.width,
                                                              self.tabViewHeight);
@@ -112,17 +110,6 @@
     self.tabCollectionViewController.view.backgroundColor = [UIColor blueColor];
     [self.view addSubview:self.tabCollectionViewController.view];
     
-}
-
-- (GAIAModelController *)modelController {
-    // Return the model controller object, creating it if necessary.
-    // In more complex implementations, the model controller may be passed to the view controller.
-    if (!_modelController) {
-        _modelController = [[GAIAModelController alloc] init];
-    }
-    _modelController.tabsArray = [self tabsArray];
-    
-    return _modelController;
 }
 
 - (GAIATabCollectionViewController *)tabCollectionViewController {
@@ -136,16 +123,25 @@
     return _tabCollectionViewController;
 }
 
-#pragma mark - ModelController Delegate Methods
-- (void)modelControllerDidSelectPage:(NSInteger)index
-{
-    [self.tabCollectionViewController selectTab:[NSIndexPath indexPathForRow:index inSection:0]
-                                      animation:YES];
+#pragma mark - UIScrollView Delegate Methods
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    
+    if (self.isTabSelectScroll) {
+        return;
+    }
+    
+    CGPoint offset = self.pageScrollView.contentOffset;
+    int page = (offset.x + self.view.frame.size.width / 2)/ self.view.frame.size.width;
+    
+    if (self.currentPage != page) {
+        [self.tabCollectionViewController selectTab:[NSIndexPath indexPathForRow:page inSection:0] animation:YES];
+        self.currentPage = page;
+    }
 }
 
-- (GAIADataViewController *)modelViewControllerAtIndex:(NSUInteger)index
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
-    return [self.delegate rootViewControllerAtIndex:index];
+    self.isTabSelectScroll = NO;
 }
 
 
@@ -209,56 +205,14 @@ referenceSizeForFooterInSection:(NSInteger)section selfViewframe:(CGRect)frame {
     
 }
 
-- (void)tabViewCollectionViewRegisterCell:(UICollectionView *)tabCollectionView {
-    [self.delegate tabViewCollectionViewRegisterCell:tabCollectionView];
+//register cell
+- (void)tabViewCollectionViewRegisterCell:(UICollectionView *)collectionView {
+    [self.delegate tabViewCollectionViewRegisterCell:collectionView];
 }
 
-
-#pragma mark - UIPageViewController Delegate Methods
-- (void)pageViewController:(UIPageViewController *)pageViewController
-        didFinishAnimating:(BOOL)finished
-   previousViewControllers:(NSArray *)previousViewControllers
-       transitionCompleted:(BOOL)completed
-{
-    if (completed) {
-        [self.tabCollectionViewController selectTab:[NSIndexPath indexPathForRow:self.modelController.currentIndex inSection:0] animation:YES];
-    }
-    
-}
-
-
-- (UIPageViewControllerSpineLocation)pageViewController:(UIPageViewController *)pageViewController spineLocationForInterfaceOrientation:(UIInterfaceOrientation)orientation {
-    if (UIInterfaceOrientationIsPortrait(orientation) || ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)) {
-        // In portrait orientation or on iPhone: Set the spine position to "min" and the page view controller's view controllers array to contain just one view controller. Setting the spine position to 'UIPageViewControllerSpineLocationMid' in landscape orientation sets the doubleSided property to YES, so set it to NO here.
-        
-        UIViewController *currentViewController = self.pageViewController.viewControllers[0];
-        NSArray *viewControllers = @[currentViewController];
-        
-        [self.pageViewController setViewControllers:viewControllers
-                                          direction:UIPageViewControllerNavigationDirectionForward
-                                           animated:YES
-                                         completion:nil];
-        
-        self.pageViewController.doubleSided = NO;
-        return UIPageViewControllerSpineLocationMin;
-    }
-    
-    // In landscape orientation: Set set the spine location to "mid" and the page view controller's view controllers array to contain two view controllers. If the current page is even, set it to contain the current and next view controllers; if it is odd, set the array to contain the previous and current view controllers.
-    GAIADataViewController *currentViewController = self.pageViewController.viewControllers[0];
-    NSArray *viewControllers = nil;
-    
-    NSUInteger indexOfCurrentViewController = [self.modelController indexOfViewController:currentViewController];
-    if (indexOfCurrentViewController == 0 || indexOfCurrentViewController % 2 == 0) {
-        UIViewController *nextViewController = [self.modelController pageViewController:self.pageViewController viewControllerAfterViewController:currentViewController];
-        viewControllers = @[currentViewController, nextViewController];
-    } else {
-        UIViewController *previousViewController = [self.modelController pageViewController:self.pageViewController viewControllerBeforeViewController:currentViewController];
-        viewControllers = @[previousViewController, currentViewController];
-    }
-    [self.pageViewController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
-    
-    
-    return UIPageViewControllerSpineLocationMid;
+//tabcollection view custom
+- (void)tabViewCollectionViewCustom:(UICollectionView *)collectionView {
+    [self.delegate tabViewCollectionViewCustom:collectionView];
 }
 
 @end

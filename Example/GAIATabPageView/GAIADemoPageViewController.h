@@ -7,9 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <GAIADataViewController.h>
 
-@interface GAIADemoPageViewController : GAIADataViewController
+@interface GAIADemoPageViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 

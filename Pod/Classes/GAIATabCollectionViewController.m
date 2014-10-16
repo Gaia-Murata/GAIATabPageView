@@ -22,7 +22,6 @@
 
 const int kCollectionViewSection = 0;
 const int kFirstSelectTab = 0;
-const float kLineWidth = 0.5f;
 
 - (instancetype)init
 {
@@ -44,8 +43,7 @@ const float kLineWidth = 0.5f;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self drawTopLine];
-    [self drawUnderLine];
+
     //rayout Setting
     UICollectionViewFlowLayout *myLayout = [[UICollectionViewFlowLayout alloc] init];
     //margin = 0
@@ -60,10 +58,9 @@ const float kLineWidth = 0.5f;
     self.tabCollectionViewController.dataSource = self;
     [self.tabCollectionViewController setShowsHorizontalScrollIndicator:NO];
     [self.tabCollectionViewController setShowsVerticalScrollIndicator:NO];
-    self.tabCollectionViewController.backgroundColor = [UIColor whiteColor];
-    
     [self.delegate tabViewCollectionViewRegisterCell:self.tabCollectionViewController];
-    
+    //Custom CollectionView;
+    [self.delegate tabViewCollectionViewCustom:self.tabCollectionViewController];
     [self.view addSubview:self.tabCollectionViewController];
     
 }
@@ -93,34 +90,6 @@ const float kLineWidth = 0.5f;
     
     [self.tabCollectionViewController reloadData];
 }
-
-#pragma mark - Private Method
-- (void)drawTopLine
-{
-    UIView *border = [[UIView alloc] initWithFrame:CGRectMake(0,
-                                                              0,
-                                                              self.view.frame.size.width,
-                                                              kLineWidth)];
-    
-    border.backgroundColor = [UIColor colorWithRed:204.0f/255.0f green:204.0f/255.0f blue:204.0f/255.0f alpha:1];
-    border.layer.zPosition = 101;
-    [self.view addSubview:border];
-}
-
-- (void)drawUnderLine
-{
-    UIView *border = [[UIView alloc] initWithFrame:CGRectMake(0,
-                                                              self.view.frame.size.height - kLineWidth,
-                                                              self.view.bounds.size.width,
-                                                              kLineWidth)];
-    
-    border.backgroundColor = [UIColor colorWithRed:204.0f/255.0f green:204.0f/255.0f blue:204.0f/255.0f alpha:1];
-    border.layer.zPosition = 101;
-    [self.view addSubview:border];
-}
-
-
-
 
 #pragma mark - UICollectionView DataSource
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
