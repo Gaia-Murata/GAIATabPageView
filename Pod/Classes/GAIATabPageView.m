@@ -17,6 +17,7 @@
 @property (readonly, strong, nonatomic) GAIATabCollectionViewController *tabCollectionViewController;
 @property NSInteger currentPage;
 @property CGFloat tabViewHeight;
+@property BOOL isTabSelectScroll;
 
 @end
 
@@ -48,30 +49,15 @@
     [self setupTabView];
 }
 
-//- (void)selectPage:(int)index
-//{
-//    //If Reverse number of pages is less than the CurrentIndex
-//    if (self.modelController.currentIndex > index) {
-//        self.modelController.currentIndex = index;
-//        GAIADataViewController *selectViewController = [self.modelController viewControllerAtIndex:index];
-//        NSArray *viewControllers = @[selectViewController];
-//        [self.pageScrollView setViewControllers:viewControllers
-//                                          direction:UIPageViewControllerNavigationDirectionReverse
-//                                           animated:YES
-//                                         completion:nil];
-//
-//        //If Forword number of pages is greater than CurrentIndex
-//    } else if(self.modelController.currentIndex < index) {
-//        self.modelController.currentIndex = index;
-//        GAIADataViewController *selectViewController = [self.modelController viewControllerAtIndex:index];
-//
-//        NSArray *viewControllers = @[selectViewController];
-//        [self.pageViewController setViewControllers:viewControllers
-//                                          direction:UIPageViewControllerNavigationDirectionForward
-//                                           animated:YES
-//                                         completion:nil];
-//    }
-//}
+- (void)selectPage:(int)index
+{
+    self.isTabSelectScroll = YES;
+    self.currentPage = index;
+    CGPoint offset;
+    offset.x = self.view.frame.size.width * index;
+    offset.y = 0;
+    [self.pageScrollView setContentOffset:offset animated:YES];
+}
 
 #pragma mark - Private Method
 
@@ -94,7 +80,7 @@
                                                                            0,
                                                                            s.width,
                                                                            s.height)];
-        subContent1View.backgroundColor = [UIColor greenColor];
+        subContent1View.backgroundColor = [UIColor colorWithRed:index*20/255.0f green:204.0f * index/255.0f blue:204.0f/255.0f alpha:1];
         [contentView addSubview:subContent1View];
     }
 
@@ -106,6 +92,8 @@
     self.pageScrollView.contentOffset = CGPointMake(0, 0);
     self.currentPage = 1;
     [self.view addSubview:self.pageScrollView];
+    self.isTabSelectScroll = NO;
+
 }
 
 
@@ -135,6 +123,10 @@
 #pragma mark - UIScrollView Delegate Methods
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     
+    if (self.isTabSelectScroll) {
+        return;
+    }
+    
     CGPoint offset = self.pageScrollView.contentOffset;
     int page = (offset.x + self.view.frame.size.width / 2)/ self.view.frame.size.width;
     
@@ -144,11 +136,16 @@
     }
 }
 
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+{
+    self.isTabSelectScroll = NO;
+}
+
 
 #pragma mark - TabCollectionView Delegate Methods
 - (void)tabCollectionViewControllerDidSelectTab:(NSIndexPath *)indexPath
 {
-    //[self selectPage:(int)indexPath.row];
+    [self selectPage:(int)indexPath.row];
 }
 
 //cell
