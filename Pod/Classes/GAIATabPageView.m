@@ -69,25 +69,30 @@
     self.pageScrollView.showsHorizontalScrollIndicator = NO;
     self.currentPage = 1;
     self.isTabSelectScroll = NO;
-
     
-    CGSize s = self.pageScrollView.frame.size;
+    
+    CGSize s = self.view.frame.size;
     CGRect contentRect = CGRectMake(0,
                                     self.tabViewHeight,
                                     s.width * [self.tabsArray count],
                                     s.height);
     UIView *contentView = [[UIView alloc] initWithFrame:contentRect];
-
+    
     NSInteger index;
     for (index = 0; index < [self.tabsArray count]; index++) {
         
-        UIView *pageView = [self.delegate tabViewPageUIViewControllerAtIndex:index].view;
-        pageView.frame = CGRectMake(self.view.frame.size.width * index,
-                                    0,
-                                    s.width,
-                                    s.height - self.tabViewHeight);
+        UIViewController *pageViewController = [self.delegate tabViewPageUIViewControllerAtIndex:index];
         
-        [contentView addSubview:pageView];
+        [self addChildViewController:pageViewController];
+        [contentView addSubview:pageViewController.view];
+        [pageViewController didMoveToParentViewController:self];
+        
+        pageViewController.view.frame = CGRectMake(self.view.frame.size.width * index,
+                                                   self.view.frame.origin.y,
+                                                   self.view.frame.size.width,
+                                                   self.view.frame.size.height);
+        
+        
     }
     
     [self.pageScrollView addSubview:contentView];
@@ -96,7 +101,7 @@
     self.pageScrollView.contentOffset = CGPointMake(0, 0);
     
     [self.view addSubview:self.pageScrollView];
-
+    
 }
 
 
