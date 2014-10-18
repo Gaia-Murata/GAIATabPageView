@@ -38,7 +38,7 @@
 
 
 #pragma mark - Public Method
-- (void)drawTabview:(NSArray *)tabs tabViewHeight:(CGFloat)tabViewHeight;
+- (void)drawTabview:(NSMutableArray *)tabs tabViewHeight:(CGFloat)tabViewHeight;
 {
     self.tabCollectionViewController.delegate = self;
     
@@ -57,6 +57,13 @@
     offset.x = self.view.frame.size.width * index;
     offset.y = 0;
     [self.pageScrollView setContentOffset:offset animated:YES];
+}
+
+- (void)tabAdd:(NSString *)newTabName
+{
+    [self.tabsArray addObject:newTabName];
+    [self.tabCollectionViewController.tabCollectionViewController reloadData];
+    
 }
 
 #pragma mark - Private Method

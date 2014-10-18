@@ -11,4 +11,6 @@
 
 @interface GAIAViewController : UIViewController<GAIATabPageViewDelegate>
 
+- (IBAction)tabAdd:(id)sender;
+
 @end

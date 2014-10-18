@@ -11,8 +11,6 @@
 
 @interface GAIATabCollectionViewController ()
 
-@property (strong, nonatomic) UICollectionView *tabCollectionViewController;
-
 @property NSUInteger currentTab;
 
 @end

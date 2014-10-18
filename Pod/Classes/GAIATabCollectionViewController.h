@@ -81,8 +81,10 @@ referenceSizeForFooterInSection:(NSInteger)section
  */
 - (void)selectTab:(NSIndexPath *)indexPath animation:(BOOL)animation;
 
+
 //List of tab
-@property (copy, nonatomic) NSArray *tabsArray;
+@property (weak, nonatomic) NSMutableArray *tabsArray;
+@property (strong, nonatomic) UICollectionView *tabCollectionViewController;
 @property (weak, nonatomic) id<GAIATabCollectionViewControllerDelegate> delegate;
 
 @end
