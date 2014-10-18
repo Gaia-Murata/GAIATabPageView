@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "GAIATabPageView"
-  s.version          = "0.2.1"
+  s.version          = "0.2.2"
   s.summary          = "Google Play Like ViewCotroller"
   s.description      = <<-DESC
                        * Google Play Like Tab Paging ViewCotroller
