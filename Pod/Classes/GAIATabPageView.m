@@ -17,7 +17,10 @@
 @property (readonly, strong, nonatomic) GAIATabCollectionViewController *tabCollectionViewController;
 @property NSInteger currentPage;
 @property CGFloat tabViewHeight;
+//Tab And Page Scroll ManageFlag
 @property BOOL isTabSelectScroll;
+//PageView
+@property UIView *contentView;
 
 @end
 
@@ -38,7 +41,7 @@
 
 
 #pragma mark - Public Method
-- (void)drawTabview:(NSArray *)tabs tabViewHeight:(CGFloat)tabViewHeight;
+- (void)drawTabview:(NSMutableArray *)tabs tabViewHeight:(CGFloat)tabViewHeight;
 {
     self.tabCollectionViewController.delegate = self;
     
@@ -59,6 +62,16 @@
     [self.pageScrollView setContentOffset:offset animated:YES];
 }
 
+- (void)tabAdd:(NSString *)newTabName
+{
+    NSInteger index = [self.tabsArray count];
+    [self.tabsArray addObject:newTabName];
+    [self.tabCollectionViewController.tabCollectionViewController reloadData];
+    
+    [self addPageViewController:index];
+    
+}
+
 #pragma mark - Private Method
 
 - (void)setupPageViewController
@@ -76,7 +89,7 @@
                                     self.tabViewHeight,
                                     s.width * [self.tabsArray count],
                                     s.height);
-    UIView *contentView = [[UIView alloc] initWithFrame:contentRect];
+    self.contentView = [[UIView alloc] initWithFrame:contentRect];
     
     NSInteger index;
     for (index = 0; index < [self.tabsArray count]; index++) {
@@ -84,7 +97,7 @@
         UIViewController *pageViewController = [self.delegate tabViewPageUIViewControllerAtIndex:index];
         
         [self addChildViewController:pageViewController];
-        [contentView addSubview:pageViewController.view];
+        [self.contentView addSubview:pageViewController.view];
         [pageViewController didMoveToParentViewController:self];
         
         pageViewController.view.frame = CGRectMake(self.view.frame.size.width * index,
@@ -95,13 +108,34 @@
         
     }
     
-    [self.pageScrollView addSubview:contentView];
-    self.pageScrollView.contentSize = contentView.frame.size;
+    [self.pageScrollView addSubview:self.contentView];
+    self.pageScrollView.contentSize = self.contentView.frame.size;
     
     self.pageScrollView.contentOffset = CGPointMake(0, 0);
     
     [self.view addSubview:self.pageScrollView];
     
+}
+
+
+- (void)addPageViewController:(NSInteger)index
+{
+    self.contentView.frame = CGRectMake(self.contentView.frame.origin.x,
+                              self.contentView.frame.origin.y,
+                              self.view.frame.size.width * [self.tabsArray count],
+                              self.contentView.frame.size.height);
+    
+    UIViewController *pageViewController = [self.delegate tabViewPageUIViewControllerAtIndex:index];
+    
+    [self addChildViewController:pageViewController];
+    [self.contentView addSubview:pageViewController.view];
+    [pageViewController didMoveToParentViewController:self];
+    
+    pageViewController.view.frame = CGRectMake(self.view.frame.size.width * index,
+                                               self.view.frame.origin.y,
+                                               self.view.frame.size.width,
+                                               self.view.frame.size.height);
+    self.pageScrollView.contentSize = self.contentView.frame.size;
 }
 
 

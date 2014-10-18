@@ -76,14 +76,14 @@ referenceSizeForFooterInSection:(NSInteger)section
 
 @property (weak, nonatomic) id<GAIATabPageViewDelegate> delegate;
 //NSArray Array for tabs make
-@property (copy, nonatomic) NSArray *tabsArray;
+@property (weak, nonatomic) NSMutableArray *tabsArray;
 
 /**
  * drawTabView
  *
  * @param tabs 
  */
-- (void)drawTabview:(NSArray *)tabs tabViewHeight:(CGFloat)tabViewHeight;
+- (void)drawTabview:(NSMutableArray *)tabs tabViewHeight:(CGFloat)tabViewHeight;
 
 /**
  * selectPage
@@ -92,6 +92,11 @@ referenceSizeForFooterInSection:(NSInteger)section
  * @param row Page you want to view
  */
 - (void)selectPage:(int)row;
+
+/**
+ * addTab
+ */
+- (void)tabAdd:(NSString *)newTabName;
 
 @end
 

@@ -8,6 +8,24 @@
 ##ScreenShot
 
 ![Screen Shot](https://cloud.githubusercontent.com/assets/1711925/4669960/add2c49e-5572-11e4-8ccb-d381e5f8040d.gif)
+![Screen Shot](https://cloud.githubusercontent.com/assets/1711925/4688767/0cff710a-5691-11e4-9766-241226c265dc.gif)
+
+
+##Version Summary
+
+- version0.1.2
+    - First!!
+
+- version0.2.0
+    - tabViewClass Change UIPageView -> UIScrollView
+    - version0.1.x not support
+
+- version0.2.1
+    - bug fix
+
+- version0.2.2
+    - tab add Function 
+    - bug fix!!
 
 ## Usage
 

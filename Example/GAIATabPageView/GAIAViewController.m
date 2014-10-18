@@ -11,7 +11,7 @@
 
 @interface GAIAViewController ()
 
-@property (copy, nonatomic) NSArray *tabsArray;
+@property (strong, nonatomic) NSMutableArray *tabsArray;
 @property (strong, nonatomic) GAIATabPageView *tabPageRootViewController;
 @property float firstCellWidth;
 @property float lastCellWidth;
@@ -30,7 +30,7 @@ const float kLineWidth = 0.5f;
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    self.tabsArray = @[@"FLAMINGO", @"HONY FLOWER", @"ROYAL", @"EUCALYPTUS", @"SAND STORM"];
+    self.tabsArray = [@[@"FLAMINGO", @"HONY FLOWER", @"ROYAL", @"EUCALYPTUS", @"SAND STORM"] mutableCopy];
     self.tabPageRootViewController = [GAIATabPageView new];
     //Current Tab Color Setting
     
@@ -96,6 +96,8 @@ const float kLineWidth = 0.5f;
         vc = (GAIADemoPageViewController*)[self.storyboard instantiateViewControllerWithIdentifier:@"GAIADemoPageViewController4"];
     } else if (index == 4) {
         vc = (GAIADemoPageViewController*)[self.storyboard instantiateViewControllerWithIdentifier:@"GAIADemoPageViewController5"];
+    } else {
+        vc = (GAIADemoPageViewController*)[self.storyboard instantiateViewControllerWithIdentifier:@"GAIADemoPageViewController1"];
     }
     
     return vc;
@@ -247,7 +249,9 @@ referenceSizeForFooterInSection:(NSInteger)section
     
 }
 
-
+- (IBAction)tabAdd:(id)sender {
+    [self.tabPageRootViewController tabAdd:@"ADD TAB"];
+}
 
 
 @end
