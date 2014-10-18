@@ -96,6 +96,8 @@ const float kLineWidth = 0.5f;
         vc = (GAIADemoPageViewController*)[self.storyboard instantiateViewControllerWithIdentifier:@"GAIADemoPageViewController4"];
     } else if (index == 4) {
         vc = (GAIADemoPageViewController*)[self.storyboard instantiateViewControllerWithIdentifier:@"GAIADemoPageViewController5"];
+    } else {
+        vc = (GAIADemoPageViewController*)[self.storyboard instantiateViewControllerWithIdentifier:@"GAIADemoPageViewController1"];
     }
     
     return vc;
