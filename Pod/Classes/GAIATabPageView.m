@@ -14,7 +14,8 @@
 @interface GAIATabPageView ()
 
 @property (strong, nonatomic) UIScrollView *pageScrollView;
-@property (readonly, strong, nonatomic) GAIATabCollectionViewController *tabCollectionViewController;
+@property (strong, nonatomic) UICollectionView *tabCollectionViewController;
+
 @property NSInteger currentPage;
 @property CGFloat tabViewHeight;
 //Tab And Page Scroll ManageFlag
@@ -26,12 +27,17 @@
 
 @implementation GAIATabPageView
 
-//const
-
-@synthesize tabCollectionViewController = _tabCollectionViewController;
+const int kCollectionViewSection = 0;
+const int kFirstSelectTab = 0;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    
+    [super viewDidAppear:animated];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -41,17 +47,28 @@
 
 
 #pragma mark - Public Method
+/**
+ * drawTabView
+ *
+ * @param tabs
+ * @param tabViewHeight
+ */
 - (void)drawTabview:(NSMutableArray *)tabs tabViewHeight:(CGFloat)tabViewHeight;
 {
-    self.tabCollectionViewController.delegate = self;
-    
     self.tabsArray = tabs;
     self.tabViewHeight = tabViewHeight;
+    self.currentPage = kFirstSelectTab;
     
     [self setupPageViewController];
     [self setupTabView];
 }
 
+/**
+ * selectPage
+ * The transition to the Page that you specify
+ *
+ * @param row Page you want to view
+ */
 - (void)selectPage:(int)index
 {
     self.isTabSelectScroll = YES;
@@ -66,7 +83,7 @@
 {
     NSInteger index = [self.tabsArray count];
     [self.tabsArray addObject:newTabName];
-    [self.tabCollectionViewController.tabCollectionViewController reloadData];
+    [self.tabCollectionViewController reloadData];
     
     [self addPageViewController:index];
     
@@ -80,7 +97,6 @@
     self.pageScrollView.pagingEnabled = YES;
     self.pageScrollView.delegate = self;
     self.pageScrollView.showsHorizontalScrollIndicator = NO;
-    self.currentPage = 1;
     self.isTabSelectScroll = NO;
     
     
@@ -141,25 +157,38 @@
 
 - (void)setupTabView
 {
-    self.tabCollectionViewController.view.frame = CGRectMake(0, 0,
-                                                             self.view.frame.size.width,
-                                                             self.tabViewHeight);
+    CGRect tabViewRect = CGRectMake(0, 0,
+                                    self.view.frame.size.width,
+                                    self.tabViewHeight);
+
+    //rayout Setting
+    UICollectionViewFlowLayout *myLayout = [[UICollectionViewFlowLayout alloc] init];
+    //margin = 0
+    myLayout.minimumLineSpacing = 0;
+    myLayout.minimumInteritemSpacing = 0;
+    myLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     
-    [self addChildViewController:self.tabCollectionViewController];
-    self.tabCollectionViewController.view.backgroundColor = [UIColor blueColor];
-    [self.view addSubview:self.tabCollectionViewController.view];
+    self.tabCollectionViewController = [[UICollectionView alloc] initWithFrame:tabViewRect collectionViewLayout:myLayout];
+    self.tabCollectionViewController.delegate = self;
+    self.tabCollectionViewController.dataSource = self;
+    [self.tabCollectionViewController setShowsHorizontalScrollIndicator:NO];
+    [self.tabCollectionViewController setShowsVerticalScrollIndicator:NO];
+    [self.view addSubview:self.tabCollectionViewController];
     
+    [self.delegate tabViewCollectionViewRegisterCell:self.tabCollectionViewController];
+    [self.delegate tabViewCollectionViewCustom:self.tabCollectionViewController];    
 }
 
-- (GAIATabCollectionViewController *)tabCollectionViewController {
-    // Return the model controller object, creating it if necessary.
-    // In more complex implementations, the model controller may be passed to the view controller.
-    if (!_tabCollectionViewController) {
-        _tabCollectionViewController = [[GAIATabCollectionViewController alloc] init];
-    }
-    _tabCollectionViewController.tabsArray = [self tabsArray];
+#pragma mark - Public Method
+- (void)selectTab:(NSIndexPath *)indexPath animation:(BOOL)animation
+{
+    [self.tabCollectionViewController scrollToItemAtIndexPath:indexPath
+     
+                                             atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
+                                                     animated:animation];
+    self.currentPage = indexPath.row;
     
-    return _tabCollectionViewController;
+    [self.tabCollectionViewController reloadData];
 }
 
 #pragma mark - UIScrollView Delegate Methods
@@ -173,7 +202,7 @@
     int page = (offset.x + self.view.frame.size.width / 2)/ self.view.frame.size.width;
     
     if (self.currentPage != page) {
-        [self.tabCollectionViewController selectTab:[NSIndexPath indexPathForRow:page inSection:0] animation:YES];
+        [self selectTab:[NSIndexPath indexPathForRow:page inSection:kCollectionViewSection] animation:YES];
         self.currentPage = page;
     }
 }
@@ -183,75 +212,82 @@
     self.isTabSelectScroll = NO;
 }
 
-
-#pragma mark - TabCollectionView Delegate Methods
-- (void)tabCollectionViewControllerDidSelectTab:(NSIndexPath *)indexPath
-{
-    [self selectPage:(int)indexPath.row];
+#pragma mark - UICollectionView DataSource
+-(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
+    return [self.tabsArray count];
 }
 
-//cell
-- (UICollectionViewCell*)tabViewCollectionView:(UICollectionView *)collectionView
-                        cellForItemAtIndexPath:(NSIndexPath *)indexPath selfViewframe:(CGRect)frame
-{
+- (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
+    CGRect tabViewRect = CGRectMake(0, 0,
+                                    self.view.frame.size.width,
+                                    self.tabViewHeight);
+    //Current Cell
+    if (indexPath.row == self.currentPage) {
+        return [self.delegate tabViewCollectionView:(UICollectionView *)collectionView
+                     selectedCellForItemAtIndexPath:(NSIndexPath *)indexPath
+                                       tabViewFrame:tabViewRect];
+    }
+    
+    //Cell
     return [self.delegate tabViewCollectionView:(UICollectionView *)collectionView
                          cellForItemAtIndexPath:(NSIndexPath *)indexPath
-                                   tabViewFrame:frame];
-    
+                                   tabViewFrame:tabViewRect];
 }
 
-//select cell
-- (UICollectionViewCell*)tabViewCollectionView:(UICollectionView *)collectionView
-                selectedCellForItemAtIndexPath:(NSIndexPath *)indexPath selfViewframe:(CGRect)frame {
+#pragma mark - UICollectionView Delegate
+//Header Size
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
     
-    return [self.delegate tabViewCollectionView:(UICollectionView *)collectionView
-                 selectedCellForItemAtIndexPath:(NSIndexPath *)indexPath
-                                   tabViewFrame:frame];
-}
-
-//header size
-- (CGSize)tabViewCollectionView:(UICollectionView *)collectionView
-                         layout:(UICollectionViewLayout*)collectionViewLayout
-referenceSizeForHeaderInSection:(NSInteger)section selfViewframe:(CGRect)frame {
+    CGRect tabViewRect = CGRectMake(0, 0,
+                                    self.view.frame.size.width,
+                                    self.tabViewHeight);
     
     return [self.delegate tabViewCollectionView:(UICollectionView *)collectionView
                                          layout:(UICollectionViewLayout*)collectionViewLayout
                 referenceSizeForHeaderInSection:(NSInteger)section
-                                   tabViewFrame:frame];
+                                   tabViewFrame:tabViewRect];
 }
 
-//footer size
-- (CGSize)tabViewCollectionView:(UICollectionView *)collectionView
-                         layout:(UICollectionViewLayout*)collectionViewLayout
-referenceSizeForFooterInSection:(NSInteger)section selfViewframe:(CGRect)frame {
+//Footer Size
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
+    
+    CGRect tabViewRect = CGRectMake(0, 0,
+                                    self.view.frame.size.width,
+                                    self.tabViewHeight);
     
     return [self.delegate tabViewCollectionView:(UICollectionView *)collectionView
                                          layout:(UICollectionViewLayout*)collectionViewLayout
                 referenceSizeForFooterInSection:(NSInteger)section
-                                   tabViewFrame:frame];
+                                   tabViewFrame:tabViewRect];
 }
 
-//cell size
-- (CGSize)tabViewCollectionView:(UICollectionView *)collectionView
-                         layout:(UICollectionViewLayout *)collectionViewLayout
-         sizeForItemAtIndexPath:(NSIndexPath *)indexPath selfViewframe:(CGRect)frame {
+//Cell Size
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    CGRect tabViewRect = CGRectMake(0, 0,
+                                    self.view.frame.size.width,
+                                    self.tabViewHeight);
     
     return [self.delegate tabViewCollectionView:(UICollectionView *)collectionView
                                          layout:(UICollectionViewLayout *)collectionViewLayout
                          sizeForItemAtIndexPath:(NSIndexPath *)indexPath
-                                   tabViewFrame:frame];
+                                   tabViewFrame:tabViewRect];
     
 }
 
-//register cell
-- (void)tabViewCollectionViewRegisterCell:(UICollectionView *)collectionView {
-    [self.delegate tabViewCollectionViewRegisterCell:collectionView];
-}
-
-//tabcollection view custom
-- (void)tabViewCollectionViewCustom:(UICollectionView *)collectionView {
-    [self.delegate tabViewCollectionViewCustom:collectionView];
+//Select Tab
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+    [self selectPage:(int)indexPath.row];
+    //tab cell center
+    [self.tabCollectionViewController scrollToItemAtIndexPath:indexPath
+                                             atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
+                                                     animated:YES];
+    self.currentPage = indexPath.row;
+    
+    //Delegate select tab Index
+    [self.tabCollectionViewController reloadData];
 }
 
 @end

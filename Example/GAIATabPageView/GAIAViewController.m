@@ -37,12 +37,12 @@ const float kLineWidth = 0.5f;
     self.tabPageRootViewController.delegate = self;
     [self.view addSubview:self.tabPageRootViewController.view];
     self.tabPageRootViewController.view.frame = self.view.bounds;
-    
+    [self.tabPageRootViewController drawTabview:self.tabsArray tabViewHeight:kTabViewCellHeigth];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    [self.tabPageRootViewController drawTabview:self.tabsArray tabViewHeight:kTabViewCellHeigth];
+
 }
 
 - (void)didReceiveMemoryWarning
