@@ -173,7 +173,6 @@ const int kFirstSelectTab = 0;
     self.tabCollectionViewController.dataSource = self;
     [self.tabCollectionViewController setShowsHorizontalScrollIndicator:NO];
     [self.tabCollectionViewController setShowsVerticalScrollIndicator:NO];
-    self.tabCollectionViewController.backgroundColor = [UIColor blueColor];
     [self.view addSubview:self.tabCollectionViewController];
     
     [self.delegate tabViewCollectionViewRegisterCell:self.tabCollectionViewController];
