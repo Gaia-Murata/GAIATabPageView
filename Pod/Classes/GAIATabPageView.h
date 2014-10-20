@@ -10,7 +10,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GAIATabCollectionViewController.h"
 
 @class GAIATabPageView;
 
@@ -72,7 +71,7 @@ referenceSizeForFooterInSection:(NSInteger)section
 @end
 
 
-@interface GAIATabPageView : UIViewController <GAIATabCollectionViewControllerDelegate, UIScrollViewDelegate>
+@interface GAIATabPageView : UIViewController <UIScrollViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
 @property (weak, nonatomic) id<GAIATabPageViewDelegate> delegate;
 //NSArray Array for tabs make
@@ -95,6 +94,8 @@ referenceSizeForFooterInSection:(NSInteger)section
 
 /**
  * addTab
+ * add tab 
+ *
  */
 - (void)tabAdd:(NSString *)newTabName;
 

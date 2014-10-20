@@ -27,6 +27,10 @@
     - tab add Function 
     - bug fix!!
 
+- version0.2.3
+    - bug fix!!
+    - GAIATabCollectionView Marge
+
 ## Usage
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
