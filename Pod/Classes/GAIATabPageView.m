@@ -201,6 +201,11 @@ const int kFirstSelectTab = 0;
     CGPoint offset = self.pageScrollView.contentOffset;
     int page = (offset.x + self.view.frame.size.width / 2)/ self.view.frame.size.width;
     
+    //last page end
+    if (page >= [self.tabsArray count]) {
+        return;
+    }
+    
     if (self.currentPage != page) {
         [self selectTab:[NSIndexPath indexPathForRow:page inSection:kCollectionViewSection] animation:YES];
         self.currentPage = page;
